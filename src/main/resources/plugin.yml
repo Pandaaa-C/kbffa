@@ -1,0 +1,36 @@
+name: KnockbackFFA
+author: Panda0day
+main: com.panda0day.kbffa.Main
+api-version: 1.21
+description: KnockbackFFA Minigame
+version: 0.0.1
+
+commands:
+  addlocation:
+    description: Add Location to the Location Manager
+    usage: /addlocation <name>
+    aliases:
+      - addloc
+  locations:
+    description: List all available locations
+    usage: /locations
+    aliases:
+      - locs
+  deletelocation:
+    description: Delete an available location
+    usage: /deletelocation <name>
+    aliases:
+      - deleteloc
+      - delloc
+  teleportworld:
+    description: Teleport to a World
+    usage: /teleporteworld <name>
+    aliases:
+      - tpworld
+      - tpw
+  clearstats:
+    description: Clear the players stats
+    usage: /clearstats
+  test:
+    description: Test command
+    usage: /test
