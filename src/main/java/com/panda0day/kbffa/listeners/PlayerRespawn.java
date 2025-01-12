@@ -3,6 +3,7 @@ package com.panda0day.kbffa.listeners;
 import com.panda0day.kbffa.managers.ItemManager;
 import com.panda0day.kbffa.managers.LocationManager;
 import com.panda0day.kbffa.managers.WorldManager;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,11 +31,15 @@ public class PlayerRespawn implements Listener {
             player.setHealth(20);
             player.setFoodLevel(20);
 
-            Map<Integer, Enchantment> enchantments = new HashMap<>();
-            enchantments.put(10, Enchantment.UNBREAKING);
-            enchantments.put(2, Enchantment.KNOCKBACK);
 
-            player.getInventory().addItem(ItemManager.createItemWithEnchantments(Material.STICK, 1, "OP-Stick", null, enchantments));
+            player.getInventory().addItem(
+                    new ItemManager(Material.STICK)
+                            .setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "OP Stick")
+                            .addEnchantment(Enchantment.UNBREAKING, 10)
+                            .addEnchantment(Enchantment.KNOCKBACK, 2)
+                            .setAmount(1)
+                            .create()
+            );
         }
     }
 }

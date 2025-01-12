@@ -26,15 +26,28 @@ public class TicketManager {
     public static void openTicketShopInventory(Player player) {
         Inventory inventory = Bukkit.createInventory(player, TICKET_SHOP_INVENTORY_COLUMNS * TICKET_SHOP_INVENTORY_ROWS, "Ticket Shop");
         for (int i = 0; i < (TICKET_SHOP_INVENTORY_COLUMNS * TICKET_SHOP_INVENTORY_ROWS); i++) {
-            ItemStack item = new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1);
-            inventory.setItem(i, item);
+            inventory.setItem(i,
+                    new ItemManager(Material.WHITE_STAINED_GLASS_PANE)
+                            .setDisplayName("")
+                            .setAmount(1)
+                            .create()
+            );
         }
 
         Tickets playerTickets = getPlayerTickets(player);
         String ticketsTitle = playerTickets.getTickets() <= 0 ? "§6Tickets (0)" : "§6Tickets (" + playerTickets.getTickets() + ")";
-
-        inventory.setItem(21, ItemManager.createItem(Material.PAPER, 1, "§6Buy Ticket"));
-        inventory.setItem(23, ItemManager.createItem(Material.CHEST_MINECART, 1, ticketsTitle));
+        inventory.setItem(21,
+                new ItemManager(Material.PAPER)
+                        .setDisplayName(ChatColor.GOLD + "Buy Ticket")
+                        .setAmount(1)
+                        .create()
+        );
+        inventory.setItem(23,
+                new ItemManager(Material.CHEST_MINECART)
+                        .setDisplayName(ticketsTitle)
+                        .setAmount(1)
+                        .create()
+        );
 
         player.openInventory(inventory);
     }
@@ -116,7 +129,12 @@ public class TicketManager {
         player.sendMessage(Main.getMainConfig().getPrefix() + "§aYou have bought a Ticket!");
 
         String ticketsTitle = playerTickets.getTickets() <= 0 ? "§6Tickets (0)" : "§6Tickets (" + playerTickets.getTickets() + ")";
-        player.getOpenInventory().setItem(23, ItemManager.createItem(Material.CHEST_MINECART, 1, ticketsTitle));
+        player.getOpenInventory().setItem(23,
+                new ItemManager(Material.CHEST_MINECART)
+                        .setDisplayName(ticketsTitle)
+                        .setAmount(1)
+                        .create()
+        );
     }
 
     public static void useTicket(Player player) {
@@ -130,13 +148,12 @@ public class TicketManager {
         Inventory inventory = Bukkit.createInventory(player, TICKET_INVENTORY_COLUMNS * TICKET_INVENTORY_ROWS, "§6§lTicket");
 
         for (int i = 0; i < (TICKET_INVENTORY_COLUMNS * TICKET_INVENTORY_ROWS); i++) {
-            ItemStack item = new ItemStack(Material.ENDER_CHEST, 1);
-            ItemMeta meta = item.getItemMeta();
-            assert meta != null;
-            meta.setDisplayName("§cOpen");
-            item.setItemMeta(meta);
-
-            inventory.setItem(i, item);
+            inventory.setItem(i,
+                    new ItemManager(Material.ENDER_CHEST)
+                            .setDisplayName("§cOpen")
+                            .setAmount(1)
+                            .create()
+            );
         }
 
         playerTickets.removeTicket();
@@ -152,13 +169,13 @@ public class TicketManager {
         if (inventoryView.getTitle().equalsIgnoreCase("§6§lTicket")) {
             int coins = getRarityValue();
             if (coins > 500) {
-                inventoryView.setItem(slot, ItemManager.createItemWithEnchantment(
-                        Material.GOLD_INGOT,
-                        1,
-                        "§6" + coins + " Coins",
-                        null,
-                        Enchantment.UNBREAKING,
-                        10));
+                inventoryView.setItem(slot,
+                        new ItemManager(Material.GOLD_INGOT)
+                                .setDisplayName(ChatColor.GOLD + "" + coins + " Coins")
+                                .setAmount(1)
+                                .addEnchantment(Enchantment.UNBREAKING, 10)
+                                .create()
+                );
                 player.playSound(player, Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1f, 1f);
                 player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
 
@@ -167,7 +184,11 @@ public class TicketManager {
                     player.playSound(player, Sound.ENTITY_ENDER_DRAGON_DEATH, 1f, 1f);
                 }
             } else {
-                inventoryView.setItem(slot, ItemManager.createItem(Material.GOLD_INGOT, 1, "§6" + coins + " Coins"));
+                inventoryView.setItem(slot,
+                        new ItemManager(Material.GOLD_INGOT)
+                                .setDisplayName(ChatColor.GOLD + "" + coins + " Coins")
+                                .create()
+                );
                 player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
             }
             player.sendMessage(Main.getMainConfig().getPrefix() + "You opened a Ticket! " + ChatColor.GOLD + "+" + coins + " Coins");

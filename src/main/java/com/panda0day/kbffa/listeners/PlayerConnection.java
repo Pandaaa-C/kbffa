@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,11 +35,14 @@ public class PlayerConnection implements Listener {
             player.setFoodLevel(20);
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
 
-            Map<Integer, Enchantment> enchantments = new HashMap<>();
-            enchantments.put(10, Enchantment.UNBREAKING);
-            enchantments.put(2, Enchantment.KNOCKBACK);
-
-            player.getInventory().addItem(ItemManager.createItemWithEnchantments(Material.STICK, 1, "OP-Stick", null, enchantments));
+            player.getInventory().addItem(
+                    new ItemManager(Material.STICK)
+                            .setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "OP Stick")
+                            .addEnchantment(Enchantment.UNBREAKING, 10)
+                            .addEnchantment(Enchantment.KNOCKBACK, 2)
+                            .setAmount(1)
+                            .create()
+            );
 
             Stats playerStats = StatsManager.getStats(player.getUniqueId());
             if (playerStats != null) {
