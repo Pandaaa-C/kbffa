@@ -1,5 +1,6 @@
 package com.panda0day.kbffa;
 
+import com.panda0day.kbffa.addons.DoubleJumpAddon;
 import com.panda0day.kbffa.config.DatabaseConfig;
 import com.panda0day.kbffa.config.MainConfig;
 import com.panda0day.kbffa.database.Database;
@@ -33,6 +34,9 @@ public class Main extends JavaPlugin {
     // Tasks
     private BukkitTask boardTask;
 
+    // Addons
+    private static DoubleJumpAddon doubleJumpAddon;
+
     @Override
     public void onEnable() {
         instance = this;
@@ -58,6 +62,8 @@ public class Main extends JavaPlugin {
             location = new Location(Bukkit.getWorld("world"),0 ,0, 0);
         }
         new EntitySpawner(EntityType.VILLAGER, location, "Ticket Shop");
+
+        doubleJumpAddon = new DoubleJumpAddon();
     }
 
     @Override
@@ -130,5 +136,9 @@ public class Main extends JavaPlugin {
 
     public static void setDatabase(Database database) {
         Main.database = database;
+    }
+
+    public static DoubleJumpAddon getDoubleJumpAddon() {
+        return doubleJumpAddon;
     }
 }
