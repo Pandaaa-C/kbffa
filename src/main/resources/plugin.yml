@@ -31,6 +31,6 @@ commands:
   clearstats:
     description: Clear the players stats
     usage: /clearstats
-  test:
-    description: Test command
-    usage: /test
+  admin:
+    description: Admin command
+    usage: /admin
