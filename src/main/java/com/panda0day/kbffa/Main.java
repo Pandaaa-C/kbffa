@@ -36,7 +36,6 @@ public class Main extends JavaPlugin {
     private BukkitTask boardTask;
 
     // Addons
-    private static DoubleJumpAddon doubleJumpAddon;
     private static AddonManager addonManager;
 
     @Override
@@ -73,7 +72,6 @@ public class Main extends JavaPlugin {
 
         new EntitySpawner(EntityType.VILLAGER, addonShopLocation, "Addon Shop");
 
-        doubleJumpAddon = new DoubleJumpAddon();
         addonManager = new AddonManager();
     }
 
@@ -147,10 +145,6 @@ public class Main extends JavaPlugin {
 
     public static void setDatabase(Database database) {
         Main.database = database;
-    }
-
-    public static DoubleJumpAddon getDoubleJumpAddon() {
-        return doubleJumpAddon;
     }
 
     public static AddonManager getAddonManager() {

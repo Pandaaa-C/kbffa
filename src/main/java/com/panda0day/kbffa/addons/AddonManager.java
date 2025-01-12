@@ -39,6 +39,10 @@ public class AddonManager {
         return new Date().after(addon.getAddonEnd());
     }
 
+    public Addon getAddon(Player player) {
+        return this.playerAddons.get(player);
+    }
+
     public void openAddonShopInventory(Player player) {
         Inventory inventory = Bukkit.createInventory(player, ADDON_SHOP_INVENTORY_COLUMNS * ADDON_SHOP_INVENTORY_ROWS, "Addon Shop");
 

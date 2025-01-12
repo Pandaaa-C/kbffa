@@ -1,6 +1,8 @@
 package com.panda0day.kbffa.listeners;
 
 import com.panda0day.kbffa.Main;
+import com.panda0day.kbffa.addons.Addon;
+import com.panda0day.kbffa.addons.AddonNames;
 import org.bukkit.GameMode;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -11,6 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 
+import java.util.Objects;
+
 public class DoubleJump implements Listener {
 
     @EventHandler
@@ -18,13 +22,19 @@ public class DoubleJump implements Listener {
         Player player = event.getPlayer();
         if (player.getGameMode() == GameMode.CREATIVE) return;
 
-        if (Main.getDoubleJumpAddon().canDoubleJump(player) && !player.isFlying()) {
-            event.setCancelled(true);
+        if (Main.getAddonManager().hasActiveAddon(player) && !Main.getAddonManager().isAddonExpired(player)) {
+            Addon addon = Main.getAddonManager().getAddon(player);
+            if (addon == null) return;
+            if (!Objects.equals(addon.getAddonName(), AddonNames.DOUBLE_JUMP.getDisplayName())) return;
 
-            player.setAllowFlight(false);
-            player.setVelocity(player.getLocation().getDirection().setY(0.5));
-            player.spawnParticle(Particle.CLOUD, player.getLocation(), 30, 0.5, 0.1, 0.5, 0.1);
-            player.playSound(player.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 1f, 1f);
+            if (!player.isFlying()) {
+                event.setCancelled(true);
+
+                player.setAllowFlight(false);
+                player.setVelocity(player.getLocation().getDirection().setY(0.75));
+                player.spawnParticle(Particle.CLOUD, player.getLocation(), 30, 0.5, 0.1, 0.5, 0.1);
+                player.playSound(player.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 1f, 1f);
+            }
         }
     }
 
@@ -32,8 +42,14 @@ public class DoubleJump implements Listener {
     public void onPlayerLand(PlayerMoveEvent event) {
         Player player = event.getPlayer();
 
-        if (((Entity) player).isOnGround() && Main.getDoubleJumpAddon().canDoubleJump(player)) {
-            player.setAllowFlight(true);
+        if (Main.getAddonManager().hasActiveAddon(player) && !Main.getAddonManager().isAddonExpired(player)) {
+            Addon addon = Main.getAddonManager().getAddon(player);
+            if (addon == null) return;
+            if (!Objects.equals(addon.getAddonName(), AddonNames.DOUBLE_JUMP.getDisplayName())) return;
+
+            if (((Entity) player).isOnGround()) {
+                player.setAllowFlight(true);
+            }
         }
     }
 }
