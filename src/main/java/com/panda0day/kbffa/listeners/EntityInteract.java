@@ -1,5 +1,6 @@
 package com.panda0day.kbffa.listeners;
 
+import com.panda0day.kbffa.Main;
 import com.panda0day.kbffa.managers.TicketManager;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
@@ -17,6 +18,8 @@ public class EntityInteract implements Listener {
             Villager villager = (Villager) event.getRightClicked();
             if (villager.getName().equalsIgnoreCase("Ticket Shop")) {
                 TicketManager.openTicketShopInventory(player);
+            } else if (villager.getName().equalsIgnoreCase("Addon Shop")) {
+                Main.getAddonManager().openAddonShopInventory(player);
             }
         }
     }

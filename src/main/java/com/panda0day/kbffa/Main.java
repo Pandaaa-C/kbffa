@@ -59,11 +59,19 @@ public class Main extends JavaPlugin {
 
         boardTask = getServer().getScheduler().runTaskTimer(this, PlayerBoardManager.getInstance(), 0, 1);
 
-        Location location = LocationManager.getLocation("ticket_shop");
-        if (location == null) {
-            location = new Location(Bukkit.getWorld("world"),0 ,0, 0);
+        Location ticketShopLocation = LocationManager.getLocation("ticket_shop");
+        if (ticketShopLocation == null) {
+            ticketShopLocation = new Location(Bukkit.getWorld("world"),0 ,0, 0);
         }
-        new EntitySpawner(EntityType.VILLAGER, location, "Ticket Shop");
+
+        new EntitySpawner(EntityType.VILLAGER, ticketShopLocation, "Ticket Shop");
+
+        Location addonShopLocation = LocationManager.getLocation("addon_shop");
+        if (addonShopLocation == null) {
+            addonShopLocation = new Location(Bukkit.getWorld("world"),0 ,0, 0);
+        }
+
+        new EntitySpawner(EntityType.VILLAGER, addonShopLocation, "Addon Shop");
 
         doubleJumpAddon = new DoubleJumpAddon();
         addonManager = new AddonManager();
