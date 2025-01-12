@@ -21,7 +21,7 @@ public class TicketManager {
     private static final int TICKET_INVENTORY_COLUMNS = 9;
     private static final int TICKET_INVENTORY_ROWS = 6;
 
-    private static final HashMap<UUID, Integer> TICKET_OPENED_ENDER_CHESTS = new HashMap<>();
+    private static final HashMap<UUID, Integer>  TICKET_OPENED_ENDER_CHESTS = new HashMap<>();
 
     public static void openTicketShopInventory(Player player) {
         Inventory inventory = Bukkit.createInventory(player, TICKET_SHOP_INVENTORY_COLUMNS * TICKET_SHOP_INVENTORY_ROWS, "Ticket Shop");

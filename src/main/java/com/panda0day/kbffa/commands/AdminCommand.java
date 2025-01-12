@@ -12,8 +12,7 @@ public class AdminCommand implements CommandExecutor {
         if (!(commandSender instanceof Player player)) return false;
         if (!player.isOp()) return false;
 
-        Main.getDoubleJumpAddon().addPlayer(player);
-        player.setAllowFlight(true);
+        Main.getAddonManager().openAddonShopInventory(player);
         return true;
     }
 }
