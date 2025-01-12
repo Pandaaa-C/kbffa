@@ -25,14 +25,15 @@ public class TicketManager {
 
     public static void openTicketShopInventory(Player player) {
         Inventory inventory = Bukkit.createInventory(player, TICKET_SHOP_INVENTORY_COLUMNS * TICKET_SHOP_INVENTORY_ROWS, "Ticket Shop");
-        for (int i = 0; i < (TICKET_SHOP_INVENTORY_COLUMNS * TICKET_SHOP_INVENTORY_ROWS); i++) {
+        // TODO: If the other slots should be filled with an item, uncomment this
+        /*for (int i = 0; i < (TICKET_SHOP_INVENTORY_COLUMNS * TICKET_SHOP_INVENTORY_ROWS); i++) {
             inventory.setItem(i,
                     new ItemManager(Material.WHITE_STAINED_GLASS_PANE)
-                            .setDisplayName("")
+                            .setDisplayName(ChatColor.RESET + "")
                             .setAmount(1)
                             .create()
             );
-        }
+        }*/
 
         Tickets playerTickets = getPlayerTickets(player);
         String ticketsTitle = playerTickets.getTickets() <= 0 ? "§6Tickets (0)" : "§6Tickets (" + playerTickets.getTickets() + ")";
