@@ -6,17 +6,37 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class AddonManager {
-    private List<Addon> addons = new ArrayList<>();
+    private final List<Addon> addons = new ArrayList<>();
+    public Map<Player, Addon> playerAddons = new HashMap<>();
 
     private final int ADDON_SHOP_INVENTORY_COLUMNS = 9;
     private final int ADDON_SHOP_INVENTORY_ROWS = 5;
 
     public AddonManager() {
         this.addons.add(new DoubleJumpAddon());
+    }
+
+    public void addPlayer(Player player, Addon addon) {
+        this.playerAddons.put(player, addon);
+    }
+
+    public void removePlayer(Player player) {
+        this.playerAddons.remove(player);
+    }
+
+    public boolean hasActiveAddon(Player player) {
+        return this.playerAddons.containsKey(player);
+    }
+
+    public boolean isAddonExpired(Player player) {
+        Addon addon = this.playerAddons.get(player);
+        if (addon == null) {
+            return true;
+        }
+        return new Date().after(addon.getAddonEnd());
     }
 
     public void openAddonShopInventory(Player player) {
