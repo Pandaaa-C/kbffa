@@ -1,5 +1,6 @@
 package com.panda0day.kbffa;
 
+import com.panda0day.kbffa.addons.AddonManager;
 import com.panda0day.kbffa.addons.DoubleJumpAddon;
 import com.panda0day.kbffa.config.DatabaseConfig;
 import com.panda0day.kbffa.config.MainConfig;
@@ -36,6 +37,7 @@ public class Main extends JavaPlugin {
 
     // Addons
     private static DoubleJumpAddon doubleJumpAddon;
+    private static AddonManager addonManager;
 
     @Override
     public void onEnable() {
@@ -64,6 +66,7 @@ public class Main extends JavaPlugin {
         new EntitySpawner(EntityType.VILLAGER, location, "Ticket Shop");
 
         doubleJumpAddon = new DoubleJumpAddon();
+        addonManager = new AddonManager();
     }
 
     @Override
@@ -140,5 +143,9 @@ public class Main extends JavaPlugin {
 
     public static DoubleJumpAddon getDoubleJumpAddon() {
         return doubleJumpAddon;
+    }
+
+    public static AddonManager getAddonManager() {
+        return addonManager;
     }
 }
