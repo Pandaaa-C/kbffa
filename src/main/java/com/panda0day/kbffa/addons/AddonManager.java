@@ -2,7 +2,9 @@ package com.panda0day.kbffa.addons;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,5 +27,13 @@ public class AddonManager {
         });
 
         player.openInventory(inventory);
+    }
+
+    public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        InventoryView inventoryView = event.getView();
+        if (!inventoryView.getTitle().equalsIgnoreCase("Addon Shop")) return;
+
+        event.setCancelled(true);
     }
 }

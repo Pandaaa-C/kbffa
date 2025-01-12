@@ -1,5 +1,6 @@
 package com.panda0day.kbffa.listeners;
 
+import com.panda0day.kbffa.Main;
 import com.panda0day.kbffa.managers.TicketManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,5 +11,7 @@ public class InventoryClick implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         TicketManager.onInventoryClick(event);
+
+        Main.getAddonManager().onInventoryClick(event);
     }
 }
