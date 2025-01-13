@@ -2,9 +2,12 @@ package com.panda0day.kbffa.addons;
 
 import com.panda0day.kbffa.Main;
 import com.panda0day.kbffa.managers.CoinsManager;
+import com.panda0day.kbffa.managers.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -24,6 +27,7 @@ public class AddonManager {
 
     public AddonManager() {
         this.addons.add(new DoubleJumpAddon());
+        this.addons.add(new KnockbackTenAddon());
 
         Main.getInstance().getServer().getScheduler().runTaskTimer(Main.getInstance(), new Runnable() {
             @Override
@@ -37,6 +41,19 @@ public class AddonManager {
                             if (addon == null) return;
 
                             player.sendMessage(Main.getMainConfig().getPrefix() + ChatColor.RED + "Your Addon " + ChatColor.GOLD + addon.getAddonName() + " has expired!");
+
+                            if (Objects.equals(addon.getAddonName(), AddonNames.KNOCKBACK_TEN.getDisplayName())) {
+                                player.getInventory().clear();
+
+                                player.getInventory().addItem(
+                                        new ItemManager(Material.STICK)
+                                                .setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "OP Stick")
+                                                .addEnchantment(Enchantment.UNBREAKING, 10)
+                                                .addEnchantment(Enchantment.KNOCKBACK, 2)
+                                                .setAmount(1)
+                                                .create()
+                                );
+                            }
                         }
                     }
                 });
@@ -95,6 +112,8 @@ public class AddonManager {
         ItemMeta clickedItemMeta = clickedItem.getItemMeta();
         if (clickedItemMeta == null) return;
 
+        int coins = CoinsManager.getCoins(player.getUniqueId());
+
         switch (clickedItemMeta.getDisplayName()) {
             case "§6§lDouble Jump":
                 if (hasActiveAddon(player)) {
@@ -106,13 +125,31 @@ public class AddonManager {
                     removePlayer(player);
                 }
 
-                DoubleJumpAddon addon = new DoubleJumpAddon();
-                int coins = CoinsManager.getCoins(player.getUniqueId());
-                if (coins >= addon.getAddonPrice()) {
-                    CoinsManager.removeCoins(player.getUniqueId(), addon.getAddonPrice());
-                    player.sendMessage(Main.getMainConfig().getPrefix() + ChatColor.GREEN + "You have bought the Addon " + ChatColor.GOLD + addon.getAddonName());
-                    addPlayer(player, addon);
-                    addon.allowFlight(player);
+                DoubleJumpAddon doubleJumpAddon = new DoubleJumpAddon();
+                if (coins >= doubleJumpAddon.getAddonPrice()) {
+                    CoinsManager.removeCoins(player.getUniqueId(), doubleJumpAddon.getAddonPrice());
+                    player.sendMessage(Main.getMainConfig().getPrefix() + ChatColor.GREEN + "You have bought the Addon " + ChatColor.GOLD + doubleJumpAddon.getAddonName());
+                    addPlayer(player, doubleJumpAddon);
+                    doubleJumpAddon.allowFlight(player);
+                    player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f);
+                }
+                break;
+            case "§6§lKnockback 10":
+                if (hasActiveAddon(player)) {
+                    player.sendMessage(Main.getMainConfig().getPrefix() + ChatColor.RED + "You already have an Addon active!");
+                    return;
+                }
+
+                if (isAddonExpired(player)) {
+                    removePlayer(player);
+                }
+
+                KnockbackTenAddon kbTenAddon = new KnockbackTenAddon();
+                if (coins >= kbTenAddon.getAddonPrice()) {
+                    CoinsManager.removeCoins(player.getUniqueId(), kbTenAddon.getAddonPrice());
+                    player.sendMessage(Main.getMainConfig().getPrefix() + ChatColor.GREEN + "You have bought the Addon " + ChatColor.GOLD + kbTenAddon.getAddonName());
+                    addPlayer(player, kbTenAddon);
+                    kbTenAddon.giveKnockBackTen(player);
                     player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f);
                 }
                 break;
